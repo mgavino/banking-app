@@ -1,5 +1,6 @@
-package com.mgavino.bankingrest.user.model;
+package com.mgavino.bankingrest.user.repository.model;
 
+import com.mgavino.bankingrest.core.model.AuditableEntity;
 import com.mgavino.bankingrest.core.model.IdentifyEntity;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -10,16 +11,12 @@ import java.util.Date;
 
 @Entity
 @Table(name = "usr_user")
-public class UserEntity extends IdentifyEntity {
+public class UserEntity extends AuditableEntity {
 
     @Column(unique = true)
     private String email;
 
     private String password;
-
-    @CreatedDate
-    @Column(name="creation_date")
-    private Date creationDate;
 
     public String getEmail() {
         return email;
@@ -35,14 +32,6 @@ public class UserEntity extends IdentifyEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 
 }

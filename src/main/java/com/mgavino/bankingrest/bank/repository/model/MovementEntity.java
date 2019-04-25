@@ -1,5 +1,6 @@
-package com.mgavino.bankingrest.bank.model;
+package com.mgavino.bankingrest.bank.repository.model;
 
+import com.mgavino.bankingrest.core.model.AuditableEntity;
 import com.mgavino.bankingrest.core.model.IdentifyEntity;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "bmv_bank_movement")
-public class MovementEntity extends IdentifyEntity {
+public class MovementEntity extends AuditableEntity {
 
     @Column(name="bac_id")
     private Long bankAccountId;
@@ -18,9 +19,6 @@ public class MovementEntity extends IdentifyEntity {
     private String concept;
 
     private Double amount;
-
-    @CreatedDate
-    private Date date;
 
     public Long getBankAccountId() {
         return bankAccountId;
@@ -46,11 +44,4 @@ public class MovementEntity extends IdentifyEntity {
         this.amount = amount;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 }
