@@ -1,5 +1,6 @@
 package com.mgavino.bankingrest.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,9 @@ public class UserControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Test
 	public void contextLoads() {

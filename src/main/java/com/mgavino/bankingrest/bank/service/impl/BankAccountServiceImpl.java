@@ -8,6 +8,8 @@ import com.mgavino.bankingrest.bank.service.dto.BankAccountFilterDto;
 import com.mgavino.bankingrest.bank.service.dto.BankAccountResultDto;
 import com.mgavino.bankingrest.core.exception.NotEnoughMoneyException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
+import com.mgavino.bankingrest.user.service.UserService;
+import com.mgavino.bankingrest.user.service.dto.UserResultDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -25,14 +27,19 @@ public class BankAccountServiceImpl implements BankAccountService {
     private BankAccountRepository repository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ModelMapper mapper;
 
     @Transactional
     public BankAccountResultDto insert(BankAccountDto bankAccountDto) throws Exception {
 
+        // check user exists
+        UserResultDto userDto = userService.get(bankAccountDto.getUserId());
+
         // save bank account
         BankAccountEntity bankAccount = mapper.map(bankAccountDto, BankAccountEntity.class);
-        // TODO: generate number
         BankAccountEntity savedBankAccount = repository.save(bankAccount);
 
         // result mapping

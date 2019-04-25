@@ -1,8 +1,12 @@
 package com.mgavino.bankingrest.bank.service.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class MovementDto {
 
     private String concept;
+
+    @NotNull
     private Double amount;
 
     public String getConcept() {

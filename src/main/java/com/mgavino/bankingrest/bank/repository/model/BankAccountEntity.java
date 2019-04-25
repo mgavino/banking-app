@@ -17,9 +17,6 @@ public class BankAccountEntity extends AuditableEntity {
     @Column(name="usr_id")
     private Long userId;
 
-    @Column(unique = true)
-    private String number;
-
     private Double balance;
 
     public Long getUserId() {
@@ -28,14 +25,6 @@ public class BankAccountEntity extends AuditableEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 
     public Double getBalance() {

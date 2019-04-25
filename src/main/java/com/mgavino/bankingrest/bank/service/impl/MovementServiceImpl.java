@@ -76,7 +76,7 @@ public class MovementServiceImpl implements MovementService {
     public List<MovementResultDto> find(Long bankId, MovementFilterDto movementFilterDto) throws Exception {
 
         // find list by bankId, dateFrom and dateTo
-        List<MovementEntity> movements = repository.findByBankAccountIdAndDateBetween(bankId,
+        List<MovementEntity> movements = repository.findByBankAccountIdAndCreationDateBetween(bankId,
                                             movementFilterDto.getFrom(), movementFilterDto.getTo());
         if (!movements.isEmpty()) {
 

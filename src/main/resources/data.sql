@@ -1,0 +1,1 @@
+INSERT INTO usr_user(email, password) VALUES ('Prueba', 'Prueba');

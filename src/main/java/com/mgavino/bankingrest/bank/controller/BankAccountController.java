@@ -1,7 +1,5 @@
 package com.mgavino.bankingrest.bank.controller;
 
-import com.mgavino.bankingrest.bank.repository.model.BankAccountEntity;
-import com.mgavino.bankingrest.bank.repository.model.MovementEntity;
 import com.mgavino.bankingrest.bank.service.BankAccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
 import com.mgavino.bankingrest.bank.service.dto.*;
@@ -9,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController("/bank-account")
+@RestController
+@RequestMapping("/bank-account")
 public class BankAccountController {
 
     @Autowired
@@ -23,13 +22,13 @@ public class BankAccountController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method=RequestMethod.POST)
-    public BankAccountResultDto post(@RequestBody BankAccountDto bankAccount) throws Exception {
+    public BankAccountResultDto post(@RequestBody @Valid BankAccountDto bankAccount) throws Exception {
         // insert bank account
         return bankAccountService.insert(bankAccount);
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public List<BankAccountResultDto> getAll(@ModelAttribute BankAccountFilterDto filter) throws Exception {
+    public List<BankAccountResultDto> getAll(@ModelAttribute @Valid BankAccountFilterDto filter) throws Exception {
         // get bank accounts by filter
         return bankAccountService.find(filter);
     }
@@ -40,20 +39,20 @@ public class BankAccountController {
         return bankAccountService.get(bankId);
     }
 
-    @RequestMapping(value="/{bankId}/movements")
-    public List<MovementResultDto> movements(@PathVariable("bankId") Long bankId, @ModelAttribute MovementFilterDto filter) throws Exception {
+    @RequestMapping(value="/{bankId}/movements", method=RequestMethod.GET)
+    public List<MovementResultDto> movements(@PathVariable("bankId") Long bankId, @ModelAttribute @Valid MovementFilterDto filter) throws Exception {
         // get movements by filter
         return movementService.find(bankId, filter);
     }
 
     @RequestMapping(value="/{bankId}/deposit", method=RequestMethod.POST)
-    public MovementResultDto deposit(@PathVariable("bankId") Long bankId, @RequestBody MovementDto movement) throws Exception {
+    public MovementResultDto deposit(@PathVariable("bankId") Long bankId, @RequestBody @Valid MovementDto movement) throws Exception {
         // insert deposit movement
         return movementService.deposit(bankId, movement);
     }
 
     @RequestMapping(value="/{bankId}/withdraw", method=RequestMethod.POST)
-    public MovementResultDto withdraw(@PathVariable("bankId") Long bankId, @RequestBody MovementDto movement) throws Exception {
+    public MovementResultDto withdraw(@PathVariable("bankId") Long bankId, @RequestBody @Valid MovementDto movement) throws Exception {
         // insert withdraw movement
         return movementService.withdraw(bankId, movement);
     }

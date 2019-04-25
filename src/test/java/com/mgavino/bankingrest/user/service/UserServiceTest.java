@@ -1,5 +1,6 @@
-package com.mgavino.bankingrest.bank.service;
+package com.mgavino.bankingrest.user.service;
 
+import com.mgavino.bankingrest.bank.service.MovementService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,14 +10,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MovementServiceTests {
+public class UserServiceTest {
 
 	@Autowired
-	private MovementService movementService;
+	private UserService userService;
 
 	@Test
 	public void contextLoads() {
-		Assert.assertNotNull(movementService);
+		Assert.assertNotNull(userService);
 	}
 
 }

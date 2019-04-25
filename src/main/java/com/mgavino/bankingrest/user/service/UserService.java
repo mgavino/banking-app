@@ -8,4 +8,6 @@ public interface UserService {
 
     public UserResultDto insert(UserDto userDto) throws Exception;
 
+    public UserResultDto get(Long id) throws Exception;
+
 }
