@@ -1,22 +1,16 @@
 package com.mgavino.bankingrest.bank.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mgavino.bankingrest.bank.repository.BankAccountRepository;
-import com.mgavino.bankingrest.bank.repository.MovementRepository;
-import com.mgavino.bankingrest.bank.repository.model.BankAccountEntity;
-import com.mgavino.bankingrest.bank.service.BankAccountService;
+import com.mgavino.bankingrest.bank.service.AccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
-import com.mgavino.bankingrest.bank.service.dto.BankAccountDto;
+import com.mgavino.bankingrest.bank.service.dto.AccountDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementDto;
-import com.mgavino.bankingrest.bank.service.dto.MovementFilterDto;
+import com.mgavino.bankingrest.bank.service.enums.MovementType;
 import com.mgavino.bankingrest.core.exception.NotEnoughMoneyException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
-import com.mgavino.bankingrest.user.repository.UserRepository;
-import com.mgavino.bankingrest.utils.TestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,12 +22,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BankAccountControllerFailTests {
+public class BankControllerFailTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,13 +36,13 @@ public class BankAccountControllerFailTests {
     @MockBean
     private MovementService movementService;
     @MockBean
-    private BankAccountService bankAccountService;
+    private AccountService accountService;
 
     @Test
     public void postBadRequest() throws Exception {
 
         // try create bank account
-        BankAccountDto bank = new BankAccountDto();
+        AccountDto bank = new AccountDto();
         ResultActions result = mockMvc.perform(
                 MockMvcRequestBuilders.post( "/bank-account" )
                         .contentType(MediaType.APPLICATION_JSON)
@@ -65,7 +57,7 @@ public class BankAccountControllerFailTests {
     public void getAllNotFound() throws Exception {
 
         // mock service
-        Mockito.when(bankAccountService.find(Mockito.any()))
+        Mockito.when(accountService.find(Mockito.any()))
                 .thenThrow(new NotFoundException());
 
         // try get bank accounts
@@ -96,7 +88,7 @@ public class BankAccountControllerFailTests {
     public void getNotFound() throws Exception {
 
         // mock service
-        Mockito.when(bankAccountService.get(Mockito.any()))
+        Mockito.when(accountService.get(Mockito.any()))
                 .thenThrow(new NotFoundException());
 
         // try get bank account
@@ -130,7 +122,7 @@ public class BankAccountControllerFailTests {
     public void withdrawNotFound() throws Exception {
 
         // mock service
-        Mockito.when(movementService.withdraw(Mockito.anyLong(), Mockito.any()))
+        Mockito.when(movementService.insert(Mockito.anyLong(), MovementType.DEPOSIT, Mockito.any()))
                 .thenThrow(new NotFoundException());
 
         // try create withdraw
@@ -149,7 +141,7 @@ public class BankAccountControllerFailTests {
     public void withdrawNotEnoughMoney() throws Exception {
 
         // mock service
-        Mockito.when(movementService.withdraw(Mockito.anyLong(), Mockito.any()))
+        Mockito.when(movementService.insert(Mockito.anyLong(), MovementType.WITHDRAW, Mockito.any()))
                 .thenThrow(new NotEnoughMoneyException());
 
         // try create withdraw

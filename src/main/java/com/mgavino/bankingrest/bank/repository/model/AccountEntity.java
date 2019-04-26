@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "bac_bank_account")
-public class BankAccountEntity extends AuditableEntity {
+public class AccountEntity extends AuditableEntity {
 
     @Column(name="usr_id")
     private Long userId;

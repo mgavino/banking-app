@@ -2,10 +2,12 @@ package com.mgavino.bankingrest.bank.service.dto;
 
 import javax.validation.constraints.NotNull;
 
-public class BankAccountFilterDto {
+public class AccountDto {
 
     @NotNull
     private Long userId;
+
+    private String name;
 
     public Long getUserId() {
         return userId;
@@ -13,5 +15,13 @@ public class BankAccountFilterDto {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

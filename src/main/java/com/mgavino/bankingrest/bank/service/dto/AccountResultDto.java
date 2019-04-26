@@ -1,6 +1,6 @@
 package com.mgavino.bankingrest.bank.service.dto;
 
-public class BankAccountResultDto {
+public class AccountResultDto {
 
     private Long id;
     private Double balance;

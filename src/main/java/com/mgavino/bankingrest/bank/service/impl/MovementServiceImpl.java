@@ -1,26 +1,20 @@
 package com.mgavino.bankingrest.bank.service.impl;
 
-import com.mgavino.bankingrest.bank.repository.BankAccountRepository;
-import com.mgavino.bankingrest.bank.repository.model.BankAccountEntity;
 import com.mgavino.bankingrest.bank.repository.model.MovementEntity;
 import com.mgavino.bankingrest.bank.repository.MovementRepository;
-import com.mgavino.bankingrest.bank.service.BankAccountService;
+import com.mgavino.bankingrest.bank.service.AccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
-import com.mgavino.bankingrest.bank.service.dto.BankAccountResultDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementFilterDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementResultDto;
 import com.mgavino.bankingrest.bank.service.enums.MovementType;
-import com.mgavino.bankingrest.core.exception.NotEnoughMoneyException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +24,7 @@ public class MovementServiceImpl implements MovementService {
     private MovementRepository repository;
 
     @Autowired
-    private BankAccountService bankAccountService;
+    private AccountService accountService;
 
     @Autowired
     private ModelMapper mapper;
@@ -45,7 +39,7 @@ public class MovementServiceImpl implements MovementService {
         MovementEntity savedMovement = repository.save(movement);
 
         // update bank balance
-        bankAccountService.refreshBalance(bankId, movement.getAmount());
+        accountService.refreshBalance(bankId, movement.getAmount());
 
         // mapping
         MovementResultDto resultDto = mapper.map(savedMovement, MovementResultDto.class);

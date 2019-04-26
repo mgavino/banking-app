@@ -1,15 +1,11 @@
 package com.mgavino.bankingrest.utils;
 
-import com.mgavino.bankingrest.bank.repository.model.BankAccountEntity;
-import com.mgavino.bankingrest.bank.service.dto.BankAccountResultDto;
-import com.mgavino.bankingrest.user.repository.model.UserEntity;
-
-import java.util.Date;
+import com.mgavino.bankingrest.bank.service.dto.AccountResultDto;
 
 public class TestUtils {
 
-    public static BankAccountResultDto createBankResultDto(Long id, Double balance) {
-        BankAccountResultDto bankResultDto = new BankAccountResultDto();
+    public static AccountResultDto createBankResultDto(Long id, Double balance) {
+        AccountResultDto bankResultDto = new AccountResultDto();
         bankResultDto.setId(id);
         bankResultDto.setBalance(balance);
         return bankResultDto;
@@ -25,8 +21,8 @@ public class TestUtils {
         return userEntity;
     }
 
-    public static BankAccountEntity createMockBank(Long id, Double balance, Long userId) {
-        BankAccountEntity bankEntity = new BankAccountEntity();
+    public static AccountEntity createMockBank(Long id, Double balance, Long userId) {
+        AccountEntity bankEntity = new AccountEntity();
         bankEntity.setId(id);
         bankEntity.setBalance(balance);
         bankEntity.setNumber("");

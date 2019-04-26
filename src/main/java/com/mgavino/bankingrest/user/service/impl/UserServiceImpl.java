@@ -1,7 +1,5 @@
 package com.mgavino.bankingrest.user.service.impl;
 
-import com.mgavino.bankingrest.bank.repository.model.BankAccountEntity;
-import com.mgavino.bankingrest.bank.service.BankAccountService;
 import com.mgavino.bankingrest.core.exception.AlreadyExistsException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
 import com.mgavino.bankingrest.user.repository.model.UserEntity;
@@ -34,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
             // insert new user
             UserEntity user = mapper.map(userDto, UserEntity.class);
-            // TODO: implements PasswordEncoder with Spring Security
+            // TODO: encode password (PasswordEncoder with Spring Security)
             UserEntity savedUser = repository.save(user);
 
             // parse to result DTO
