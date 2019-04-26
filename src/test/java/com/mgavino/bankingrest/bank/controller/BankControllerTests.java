@@ -61,7 +61,7 @@ public class BankControllerTests {
 		AccountDto bank = new AccountDto();
 		bank.setUserId(1L);
 		ResultActions result = mockMvc.perform(
-				MockMvcRequestBuilders.post( "/bank-account" )
+				MockMvcRequestBuilders.post( "/bank" )
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(bank)));
 
@@ -91,7 +91,7 @@ public class BankControllerTests {
 
 		// try get bank accounts for user 1
 		ResultActions result = mockMvc.perform(
-				MockMvcRequestBuilders.get( "/bank-account" )
+				MockMvcRequestBuilders.get( "/bank" )
 						.contentType(MediaType.APPLICATION_JSON)
 						.param("userId", "1"));
 

@@ -44,7 +44,7 @@ public class BankControllerFailTests {
         // try create bank account
         AccountDto bank = new AccountDto();
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank-account" )
+                MockMvcRequestBuilders.post( "/bank" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bank)));
 
@@ -62,7 +62,7 @@ public class BankControllerFailTests {
 
         // try get bank accounts
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank-account" )
+                MockMvcRequestBuilders.get( "/bank" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userId", "1"));
 
@@ -76,7 +76,7 @@ public class BankControllerFailTests {
 
         // try get bank accounts
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank-account" )
+                MockMvcRequestBuilders.get( "/bank" )
                         .contentType(MediaType.APPLICATION_JSON));
 
         // check 400 (valid parameters)
@@ -93,7 +93,7 @@ public class BankControllerFailTests {
 
         // try get bank account
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank-account/1" )
+                MockMvcRequestBuilders.get( "/bank/1" )
                         .contentType(MediaType.APPLICATION_JSON));
 
         // check 401 (valid parameters)
@@ -110,7 +110,7 @@ public class BankControllerFailTests {
 
         // try get movements
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank-account/1/movements" )
+                MockMvcRequestBuilders.get( "/bank/1/movements" )
                         .contentType(MediaType.APPLICATION_JSON));
 
         // check 401
@@ -129,7 +129,7 @@ public class BankControllerFailTests {
         MovementDto movement = new MovementDto();
         movement.setAmount(20.0);
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank-account/1/withdraw" )
+                MockMvcRequestBuilders.post( "/bank/1/withdraw" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movement)));
 
@@ -148,7 +148,7 @@ public class BankControllerFailTests {
         MovementDto movement = new MovementDto();
         movement.setAmount(20.0);
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank-account/1/withdraw" )
+                MockMvcRequestBuilders.post( "/bank/1/withdraw" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movement)));
 
@@ -163,7 +163,7 @@ public class BankControllerFailTests {
         // try create withdraw
         MovementDto movement = new MovementDto();
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank-account/1/withdraw" )
+                MockMvcRequestBuilders.post( "/bank/1/withdraw" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movement)));
 
@@ -178,7 +178,7 @@ public class BankControllerFailTests {
         // try create deposit
         MovementDto movement = new MovementDto();
         ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank-account/1/deposit" )
+                MockMvcRequestBuilders.post( "/bank/1/deposit" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movement)));
 
