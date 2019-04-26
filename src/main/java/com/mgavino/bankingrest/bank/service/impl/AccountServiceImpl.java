@@ -87,29 +87,25 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountResultDto refreshBalance(Long id, Double amount) throws Exception {
 
-        Optional<AccountEntity> bankAccountOpt = repository.findById(id);
-        if (bankAccountOpt.isPresent()) {
+        // check bank account exists
+        AccountResultDto bankAccountDto = get(id);
 
+        Double newBalance = bankAccountDto.getBalance() + amount;
+        if (newBalance > 0) {
+
+            // update bank balance
+            Optional<AccountEntity> bankAccountOpt = repository.findById(id);
             AccountEntity bankAccount = bankAccountOpt.get();
-            Double newBalance = bankAccount.getBalance() + amount;
-            if (newBalance > 0) {
+            bankAccount.setBalance(newBalance);
+            AccountEntity savedBankAccount = repository.save(bankAccount);
 
-                // update bank balance
-                bankAccount.setBalance(newBalance);
-                AccountEntity savedBankAccount = repository.save(bankAccount);
-
-                // mapping
-                AccountResultDto resultDto = mapper.map(savedBankAccount, AccountResultDto.class);
-                return resultDto;
-
-            } else {
-                // throw not enough money
-                throw new NotEnoughMoneyException();
-            }
+            // mapping
+            AccountResultDto resultDto = mapper.map(savedBankAccount, AccountResultDto.class);
+            return resultDto;
 
         } else {
-            // throw not found exception if it is not present
-            throw new NotFoundException();
+            // throw not enough money
+            throw new NotEnoughMoneyException();
         }
 
     }
