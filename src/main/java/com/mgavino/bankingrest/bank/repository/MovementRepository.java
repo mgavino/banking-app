@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface MovementRepository extends JpaRepository<MovementEntity, Long> {
-    public List<MovementEntity> findByBankAccountIdAndCreationDateBetween(Long bankId, Date from, Date to);
+    public List<MovementEntity> findByBankAccountIdAndDateBetween(Long bankId, Date from, Date to);
 }

@@ -10,6 +10,7 @@ import com.mgavino.bankingrest.bank.service.dto.BankAccountResultDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementFilterDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementResultDto;
+import com.mgavino.bankingrest.bank.service.enums.MovementType;
 import com.mgavino.bankingrest.core.exception.NotEnoughMoneyException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
 import org.modelmapper.ModelMapper;
@@ -35,31 +36,12 @@ public class MovementServiceImpl implements MovementService {
     private ModelMapper mapper;
 
     @Transactional
-    public MovementResultDto deposit(Long bankId, MovementDto movementDto) throws Exception {
-
-        // convert to positive number
-        if (movementDto.getAmount() < 0) {
-            movementDto.setAmount(movementDto.getAmount() * -1);
-        }
-        return insert(bankId, movementDto);
-
-    }
-
-    @Transactional
-    public MovementResultDto withdraw(Long bankId, MovementDto movementDto) throws Exception {
-        // convert to negative number
-        if (movementDto.getAmount() > 0) {
-            movementDto.setAmount(movementDto.getAmount() * -1);
-        }
-        return insert(bankId, movementDto);
-    }
-
-    @Transactional
-    public MovementResultDto insert(Long bankId, MovementDto movementDto) throws Exception {
+    public MovementResultDto insert(Long bankId, MovementType type, MovementDto movementDto) throws Exception {
 
         // insert new movement
         MovementEntity movement = mapper.map(movementDto, MovementEntity.class);
         movement.setBankAccountId(bankId);
+        movement.setAmount(movement.getAmount() * type.getMultiplier());
         MovementEntity savedMovement = repository.save(movement);
 
         // update bank balance
@@ -67,7 +49,6 @@ public class MovementServiceImpl implements MovementService {
 
         // mapping
         MovementResultDto resultDto = mapper.map(savedMovement, MovementResultDto.class);
-        resultDto.setDate(movement.getCreationDate());
 
         return resultDto;
 
@@ -76,7 +57,7 @@ public class MovementServiceImpl implements MovementService {
     public List<MovementResultDto> find(Long bankId, MovementFilterDto movementFilterDto) throws Exception {
 
         // find list by bankId, dateFrom and dateTo
-        List<MovementEntity> movements = repository.findByBankAccountIdAndCreationDateBetween(bankId,
+        List<MovementEntity> movements = repository.findByBankAccountIdAndDateBetween(bankId,
                                             movementFilterDto.getFrom(), movementFilterDto.getTo());
         if (!movements.isEmpty()) {
 

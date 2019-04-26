@@ -3,6 +3,7 @@ package com.mgavino.bankingrest.bank.controller;
 import com.mgavino.bankingrest.bank.service.BankAccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
 import com.mgavino.bankingrest.bank.service.dto.*;
+import com.mgavino.bankingrest.bank.service.enums.MovementType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -48,13 +49,13 @@ public class BankAccountController {
     @RequestMapping(value="/{bankId}/deposit", method=RequestMethod.POST)
     public MovementResultDto deposit(@PathVariable("bankId") Long bankId, @RequestBody @Valid MovementDto movement) throws Exception {
         // insert deposit movement
-        return movementService.deposit(bankId, movement);
+        return movementService.insert(bankId, MovementType.DEPOSIT, movement);
     }
 
     @RequestMapping(value="/{bankId}/withdraw", method=RequestMethod.POST)
     public MovementResultDto withdraw(@PathVariable("bankId") Long bankId, @RequestBody @Valid MovementDto movement) throws Exception {
         // insert withdraw movement
-        return movementService.withdraw(bankId, movement);
+        return movementService.insert(bankId, MovementType.WITHDRAW, movement);
     }
 
 }

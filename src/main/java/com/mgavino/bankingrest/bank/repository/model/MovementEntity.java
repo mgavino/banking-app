@@ -3,15 +3,18 @@ package com.mgavino.bankingrest.bank.repository.model;
 import com.mgavino.bankingrest.core.model.AuditableEntity;
 import com.mgavino.bankingrest.core.model.IdentifyEntity;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
 @Table(name = "bmv_bank_movement")
-public class MovementEntity extends AuditableEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class MovementEntity extends IdentifyEntity {
 
     @Column(name="bac_id")
     private Long bankAccountId;
@@ -19,6 +22,9 @@ public class MovementEntity extends AuditableEntity {
     private String concept;
 
     private Double amount;
+
+    @CreatedDate
+    private Date date;
 
     public Long getBankAccountId() {
         return bankAccountId;
@@ -44,4 +50,11 @@ public class MovementEntity extends AuditableEntity {
         this.amount = amount;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

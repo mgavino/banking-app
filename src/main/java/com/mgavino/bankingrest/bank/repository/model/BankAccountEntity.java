@@ -17,6 +17,8 @@ public class BankAccountEntity extends AuditableEntity {
     @Column(name="usr_id")
     private Long userId;
 
+    private String name;
+
     private Double balance;
 
     public Long getUserId() {
@@ -35,4 +37,11 @@ public class BankAccountEntity extends AuditableEntity {
         this.balance = balance;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

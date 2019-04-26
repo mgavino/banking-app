@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS bmv_bank_movement;
+DROP TABLE IF EXISTS bac_bank_account;
+DROP TABLE IF EXISTS usr_user;
+
 CREATE TABLE usr_user (
     id serial PRIMARY KEY,
     email VARCHAR(255),
@@ -9,6 +13,7 @@ CREATE TABLE usr_user (
 CREATE TABLE bac_bank_account (
     id serial PRIMARY KEY,
     usr_id INTEGER,
+    name VARCHAR(255),
     balance DOUBLE PRECISION,
     creation_date TIMESTAMP,
     modification_date TIMESTAMP,
@@ -22,8 +27,7 @@ CREATE TABLE bmv_bank_movement (
     bac_id INTEGER,
     amount DOUBLE PRECISION,
     concept VARCHAR(255),
-    creation_date TIMESTAMP,
-    modification_date TIMESTAMP,
+    date TIMESTAMP,
     CONSTRAINT bmv_bac_fk FOREIGN KEY (bac_id)
               REFERENCES bac_bank_account(id) MATCH SIMPLE
               ON UPDATE NO ACTION ON DELETE NO ACTION
