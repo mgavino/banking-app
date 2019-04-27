@@ -34,7 +34,7 @@ public class MovementServiceImpl implements MovementService {
 
         // insert new movement
         MovementEntity movement = mapper.map(movementDto, MovementEntity.class);
-        movement.setBankAccountId(bankId);
+        movement.setAccount(bankId);
         movement.setAmount(movement.getAmount() * type.getMultiplier());
         MovementEntity savedMovement = repository.save(movement);
 
@@ -51,7 +51,7 @@ public class MovementServiceImpl implements MovementService {
     public List<MovementResultDto> find(Long bankId, MovementFilterDto movementFilterDto) throws Exception {
 
         // find list by bankId, dateFrom and dateTo
-        List<MovementEntity> movements = repository.findByBankAccountIdAndDateBetween(bankId,
+        List<MovementEntity> movements = repository.findByAccountAndDateBetween(bankId,
                                             movementFilterDto.getFrom(), movementFilterDto.getTo());
         if (!movements.isEmpty()) {
 

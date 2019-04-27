@@ -5,13 +5,13 @@ import javax.validation.constraints.NotNull;
 public class AccountFilterDto {
 
     @NotNull
-    private Long userId;
+    private Long user;
 
-    public Long getUserId() {
-        return userId;
+    public Long getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(Long user) {
+        this.user = user;
     }
 }

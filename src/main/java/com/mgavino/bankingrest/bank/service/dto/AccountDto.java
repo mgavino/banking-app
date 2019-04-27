@@ -5,16 +5,16 @@ import javax.validation.constraints.NotNull;
 public class AccountDto {
 
     @NotNull
-    private Long userId;
+    private Long user;
 
     private String name;
 
-    public Long getUserId() {
-        return userId;
+    public Long getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     public String getName() {

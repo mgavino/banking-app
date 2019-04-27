@@ -43,7 +43,7 @@ public class AccountServiceTest {
 
 		// call
 		AccountDto account = new AccountDto();
-		account.setUserId(user.getId());
+		account.setUser(user.getId());
 		account.setName("Account");
 		AccountResultDto resultDto = accountService.insert(account);
 
@@ -67,10 +67,10 @@ public class AccountServiceTest {
 
 		// call user 1
 		AccountFilterDto filter = new AccountFilterDto();
-		filter.setUserId(user.getId());
+		filter.setUser(user.getId());
 		List<AccountResultDto> resultDtos = accountService.find(filter);
 		// call user 2
-		filter.setUserId(user2.getId());
+		filter.setUser(user2.getId());
 		List<AccountResultDto> result2Dtos = accountService.find(filter);
 
 		// check user 1

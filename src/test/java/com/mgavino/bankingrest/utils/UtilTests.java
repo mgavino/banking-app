@@ -35,9 +35,9 @@ public class UtilTests {
         return resultDto;
     }
 
-    public static AccountEntity createAccountEntity(Long userId, String name, Double balance) {
+    public static AccountEntity createAccountEntity(Long user, String name, Double balance) {
         AccountEntity entity = new AccountEntity();
-        entity.setUserId(userId);
+        entity.setUser(user);
         entity.setName(name);
         entity.setBalance(balance);
         return entity;
@@ -56,7 +56,7 @@ public class UtilTests {
 
     public static MovementEntity createMovementEntity(Long bankId, String concept, Double amount, long timespamp) {
         MovementEntity entity = new MovementEntity();
-        entity.setBankAccountId(bankId);
+        entity.setAccount(bankId);
         entity.setConcept(concept);
         entity.setAmount(amount);
         if (timespamp > 0) {

@@ -53,7 +53,7 @@ public class BankControllerFailTests extends GenericControllerTests {
 
         // try get bank accounts
         Map<String, String> params = new HashMap<>();
-        params.put("userId", "1");
+        params.put("user", "1");
         ResultActions result = get(URI, params);
 
         // check 404 (not found)

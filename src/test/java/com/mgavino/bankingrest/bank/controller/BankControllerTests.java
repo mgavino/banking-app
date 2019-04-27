@@ -55,7 +55,7 @@ public class BankControllerTests extends GenericControllerTests {
 
 		// try create bank account
 		AccountDto bank = new AccountDto();
-		bank.setUserId(1L);
+		bank.setUser(1L);
 		ResultActions result = post(URI, bank);
 
 		// check 301
@@ -79,7 +79,7 @@ public class BankControllerTests extends GenericControllerTests {
 
 		// try get bank accounts by user
 		Map<String, String> params = new HashMap<>();
-		params.put("userId", "1");
+		params.put("user", "1");
 		ResultActions result = get(URI, params);
 
 		// check 200

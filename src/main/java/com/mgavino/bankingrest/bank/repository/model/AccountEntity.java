@@ -11,19 +11,19 @@ import javax.persistence.Table;
 public class AccountEntity extends AuditableEntity {
 
     @Column(name="usr_id", nullable = false)
-    private Long userId;
+    private Long user;
 
     private String name;
 
     @Column(nullable = false)
     private Double balance;
 
-    public Long getUserId() {
-        return userId;
+    public Long getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     public Double getBalance() {

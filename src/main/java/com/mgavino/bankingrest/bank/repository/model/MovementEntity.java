@@ -16,7 +16,7 @@ import java.util.Date;
 public class MovementEntity extends IdentifyEntity {
 
     @Column(name="bac_id")
-    private Long bankAccountId;
+    private Long account;
 
     private String concept;
 
@@ -26,12 +26,12 @@ public class MovementEntity extends IdentifyEntity {
     @CreatedDate
     private Date date;
 
-    public Long getBankAccountId() {
-        return bankAccountId;
+    public Long getAccount() {
+        return account;
     }
 
-    public void setBankAccountId(Long bankAccountId) {
-        this.bankAccountId = bankAccountId;
+    public void setAccount(Long account) {
+        this.account = account;
     }
 
     public String getConcept() {

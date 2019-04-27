@@ -38,7 +38,7 @@ public class AccountServiceMockFailTest {
 
 		// check
 		AccountDto account = new AccountDto();
-		account.setUserId(1L);
+		account.setUser(1L);
 		accountService.insert(account);
 
 	}
@@ -51,7 +51,7 @@ public class AccountServiceMockFailTest {
 
 		// check
 		AccountFilterDto filter = new AccountFilterDto();
-		filter.setUserId(1L);
+		filter.setUser(1L);
 		accountService.find(filter);
 
 	}

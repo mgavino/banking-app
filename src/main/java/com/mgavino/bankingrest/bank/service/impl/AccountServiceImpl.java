@@ -36,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResultDto insert(AccountDto accountDto) throws Exception {
 
         // check user exists
-        UserResultDto userDto = userService.get(accountDto.getUserId());
+        UserResultDto userDto = userService.get(accountDto.getUser());
 
         // save bank account
         AccountEntity bankAccount = mapper.map(accountDto, AccountEntity.class);
