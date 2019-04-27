@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "usr_user")
 public class UserEntity extends AuditableEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;

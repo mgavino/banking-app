@@ -48,7 +48,7 @@ public class MovementServiceMockFailTest {
 
 		// mock
 		Mockito.when(movementRepository.findByBankAccountIdAndDateBetween(Mockito.eq(1L),
-				Mockito.any(Date.class), Mockito.any(Date.class)));
+				Mockito.any(Date.class), Mockito.any(Date.class))).thenThrow(new NotFoundException());
 
 		// check
 		MovementFilterDto filter = new MovementFilterDto();

@@ -40,6 +40,7 @@ public class AccountServiceImpl implements AccountService {
 
         // save bank account
         AccountEntity bankAccount = mapper.map(accountDto, AccountEntity.class);
+        bankAccount.setBalance(0.0); // initial balance
         AccountEntity savedBankAccount = repository.save(bankAccount);
 
         // result mapping

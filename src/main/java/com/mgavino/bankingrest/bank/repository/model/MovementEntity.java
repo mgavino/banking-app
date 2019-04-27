@@ -20,6 +20,7 @@ public class MovementEntity extends IdentifyEntity {
 
     private String concept;
 
+    @Column(nullable = false)
     private Double amount;
 
     @CreatedDate

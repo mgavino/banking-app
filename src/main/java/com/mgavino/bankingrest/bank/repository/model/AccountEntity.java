@@ -10,11 +10,12 @@ import javax.persistence.Table;
 @Table(name = "bac_bank_account")
 public class AccountEntity extends AuditableEntity {
 
-    @Column(name="usr_id")
+    @Column(name="usr_id", nullable = false)
     private Long userId;
 
     private String name;
 
+    @Column(nullable = false)
     private Double balance;
 
     public Long getUserId() {
