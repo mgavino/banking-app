@@ -2,8 +2,8 @@ package com.mgavino.bankingrest.user.service.impl;
 
 import com.mgavino.bankingrest.core.exception.AlreadyExistsException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
-import com.mgavino.bankingrest.user.repository.model.UserEntity;
 import com.mgavino.bankingrest.user.repository.UserRepository;
+import com.mgavino.bankingrest.user.repository.model.UserEntity;
 import com.mgavino.bankingrest.user.service.UserService;
 import com.mgavino.bankingrest.user.service.dto.UserDto;
 import com.mgavino.bankingrest.user.service.dto.UserResultDto;

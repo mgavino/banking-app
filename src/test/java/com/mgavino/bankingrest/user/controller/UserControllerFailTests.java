@@ -1,15 +1,12 @@
 package com.mgavino.bankingrest.user.controller;
 
 import com.mgavino.bankingrest.core.GenericControllerTests;
+import com.mgavino.bankingrest.core.exception.NotFoundException;
 import com.mgavino.bankingrest.user.service.UserService;
 import com.mgavino.bankingrest.user.service.dto.UserDto;
-import com.mgavino.bankingrest.user.service.dto.UserResultDto;
-import com.mgavino.bankingrest.utils.UtilTests;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,41 +17,41 @@ import org.springframework.test.web.servlet.ResultActions;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTests extends GenericControllerTests {
+public class UserControllerFailTests extends GenericControllerTests {
 
 	private static final String URI = "/user";
-
-	@Autowired
-	private UserController userController;
 
 	@MockBean
 	private UserService userService;
 
 	@Test
-	public void contextLoads() {
-		Assert.assertNotNull(userController);
-	}
+	public void depositNotFound() throws Exception {
 
-	@Test
-	public void singup() throws Exception {
+		// mock service
+		Mockito.when(userService.insert(Mockito.any()))
+				.thenThrow(new NotFoundException());
 
-		// bank save mock
-		Mockito.when(userService.insert(Mockito.any(UserDto.class)))
-				.thenReturn( UtilTests.createUserResultDto(1L) );
-
-		// try create bank account
+		// try create withdraw
 		UserDto user = new UserDto();
 		user.setEmail("test1@mgavino.com");
 		user.setPassword("password");
 		ResultActions result = post(URI, user);
 
-		// check 301
-		UserResultDto userResponse = checkStatusReturnObj(result, HttpStatus.CREATED, UserResultDto.class);
-
-		// check response
-		Assert.assertNotNull(userResponse);
-		Assert.assertEquals(Long.valueOf(1L), userResponse.getId());
+		// check 404 (not found)
+		checkStatus(result, HttpStatus.NOT_FOUND);
 
 	}
 
+	@Test
+	public void depositBadRequest() throws Exception {
+
+		// try create deposit
+		UserDto user = new UserDto();
+		user.setEmail("test1@mgavino.com");
+		ResultActions result = post(URI, user);
+
+		// check 400 (invalid parameters)
+		checkStatus(result, HttpStatus.BAD_REQUEST);
+
+	}
 }

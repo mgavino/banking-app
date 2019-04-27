@@ -1,13 +1,14 @@
 package com.mgavino.bankingrest.bank.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mgavino.bankingrest.bank.service.AccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
 import com.mgavino.bankingrest.bank.service.dto.AccountDto;
-import com.mgavino.bankingrest.bank.service.dto.AccountFilterDto;
 import com.mgavino.bankingrest.bank.service.dto.AccountResultDto;
-import com.mgavino.bankingrest.utils.TestUtils;
+import com.mgavino.bankingrest.bank.service.dto.MovementDto;
+import com.mgavino.bankingrest.bank.service.dto.MovementResultDto;
+import com.mgavino.bankingrest.bank.service.enums.MovementType;
+import com.mgavino.bankingrest.core.GenericControllerTests;
+import com.mgavino.bankingrest.utils.UtilTests;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,29 +17,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BankControllerTests {
+public class BankControllerTests extends GenericControllerTests {
+
+	private static final String URI = "/bank";
 
 	@Autowired
 	private BankController bankAccountController;
-
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	@MockBean
 	private MovementService movementService;
@@ -55,24 +51,17 @@ public class BankControllerTests {
 
 		// bank save mock
 		Mockito.when(accountService.insert(Mockito.any(AccountDto.class)))
-				.thenReturn( TestUtils.createBankResultDto(2L, 0.0) );
+				.thenReturn( UtilTests.createAccountResultDto(2L, 0.0) );
 
 		// try create bank account
 		AccountDto bank = new AccountDto();
 		bank.setUserId(1L);
-		ResultActions result = mockMvc.perform(
-				MockMvcRequestBuilders.post( "/bank" )
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(bank)));
+		ResultActions result = post(URI, bank);
 
 		// check 301
-		String contentResponse = result
-				.andExpect(MockMvcResultMatchers.status().isCreated())
-				.andReturn().getResponse().getContentAsString();
+		AccountResultDto bankResponse = checkStatusReturnObj(result, HttpStatus.CREATED, AccountResultDto.class);
 
 		// check response
-		AccountResultDto bankResponse = objectMapper.reader().forType(AccountResultDto.class)
-				.readValue(contentResponse);
 		Assert.assertNotNull(bankResponse);
 		Assert.assertEquals(Long.valueOf(2L), bankResponse.getId());
 
@@ -81,28 +70,22 @@ public class BankControllerTests {
 	@Test
 	public void getAll() throws Exception {
 
-		// mock find user
-		List<AccountResultDto> results = new ArrayList<>();
-		results.add( TestUtils.createBankResultDto(10L, 0.0));
-		results.add( TestUtils.createBankResultDto(11L, 0.0));
+		// bank get mock
+		List<AccountResultDto> mockResults = new ArrayList<>();
+		mockResults.add( UtilTests.createAccountResultDto(1L, 0.0));
+		mockResults.add( UtilTests.createAccountResultDto(2L, 0.0));
+		Mockito.when( accountService.find(Mockito.any()) )
+				.thenReturn( mockResults );
 
-		Mockito.when( accountService.find(Mockito.any(AccountFilterDto.class)) )
-				.thenReturn( results );
-
-		// try get bank accounts for user 1
-		ResultActions result = mockMvc.perform(
-				MockMvcRequestBuilders.get( "/bank" )
-						.contentType(MediaType.APPLICATION_JSON)
-						.param("userId", "1"));
+		// try get bank accounts by user
+		Map<String, String> params = new HashMap<>();
+		params.put("userId", "1");
+		ResultActions result = get(URI, params);
 
 		// check 200
-		String contentResponse = result
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andReturn().getResponse().getContentAsString();
+		List<AccountResultDto> banksResponse = checkStatusReturnList(result, HttpStatus.OK, AccountResultDto.class);
 
 		// check response
-		List<AccountResultDto> banksResponse = objectMapper
-				.readValue(contentResponse, new TypeReference<List<AccountResultDto>>(){});
 		Assert.assertNotNull(banksResponse);
 		Assert.assertEquals(2, banksResponse.size());
 
@@ -111,25 +94,84 @@ public class BankControllerTests {
 	@Test
 	public void get() throws Exception {
 
+		// bank get mock
+		AccountResultDto mockResult = UtilTests.createAccountResultDto(1L, 0.0);
+		Mockito.when( accountService.get(Mockito.eq(1L)) ).thenReturn( mockResult );
+
+		//try get bank
+		ResultActions result = get(URI + "/1");
+
+		// check 200
+		AccountResultDto bankResponse = checkStatusReturnObj(result, HttpStatus.OK, AccountResultDto.class);
+
+		// check response
+		Assert.assertNotNull(bankResponse);
+		Assert.assertEquals(Long.valueOf(1L), bankResponse.getId());
+
 	}
 
 	@Test
 	public void movements() throws Exception {
+
+		// movements mock
+		List<MovementResultDto> mockResults = new ArrayList<>();
+		mockResults.add(UtilTests.createMovementResultDto(1L, 20.0));
+		mockResults.add(UtilTests.createMovementResultDto(2L, -10.0));
+		Mockito.when( movementService.find(Mockito.eq(1L),  Mockito.any())).thenReturn(mockResults);
+
+		// try get movements
+		ResultActions result = get(URI + "/1/movements");
+
+		// check 200
+		List<MovementResultDto> movementResults = checkStatusReturnList(result, HttpStatus.OK, MovementResultDto.class);
+
+		// check response
+		Assert.assertNotNull(movementResults);
+		Assert.assertEquals(2, movementResults.size());
 
 	}
 
 	@Test
 	public void deposit() throws Exception {
 
-	}
+		// deposit mock
+		MovementResultDto mockResult = UtilTests.createMovementResultDto(1L, 20.0);
+		Mockito.when( movementService.insert(Mockito.eq(1L), Mockito.eq(MovementType.DEPOSIT), Mockito.any()) )
+					.thenReturn( mockResult );
 
-	@Test
-	public void depositNotFound() throws Exception {
+		// try deposit
+		MovementDto movementDto = new MovementDto();
+		movementDto.setAmount(20.0);
+		ResultActions result = post(URI + "/1/deposit", movementDto);
+
+		// check 200
+		MovementResultDto resultDto = checkStatusReturnObj(result, HttpStatus.OK, MovementResultDto.class);
+
+		// check response
+		Assert.assertNotNull(resultDto);
+		Assert.assertEquals(Double.valueOf(20.0), resultDto.getAmount());
 
 	}
 
 	@Test
 	public void withdraw() throws Exception {
+
+		// deposit mock
+		MovementResultDto mockResult = UtilTests.createMovementResultDto(1L, -20.0);
+		Mockito.when( movementService.insert(Mockito.eq(1L), Mockito.eq(MovementType.WITHDRAW), Mockito.any()) )
+				.thenReturn( mockResult );
+
+		// try deposit
+		MovementDto movementDto = new MovementDto();
+		movementDto.setAmount(20.0);
+		ResultActions result = post(URI + "/1/withdraw", movementDto);
+
+		// check 200
+		MovementResultDto resultDto = checkStatusReturnObj(result, HttpStatus.OK, MovementResultDto.class);
+
+		// check response
+		Assert.assertNotNull(resultDto);
+		Assert.assertEquals(Double.valueOf(-20.0), resultDto.getAmount());
 
 	}
 

@@ -1,7 +1,7 @@
 package com.mgavino.bankingrest.bank.service.impl;
 
-import com.mgavino.bankingrest.bank.repository.model.MovementEntity;
 import com.mgavino.bankingrest.bank.repository.MovementRepository;
+import com.mgavino.bankingrest.bank.repository.model.MovementEntity;
 import com.mgavino.bankingrest.bank.service.AccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
 import com.mgavino.bankingrest.bank.service.dto.MovementDto;

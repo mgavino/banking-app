@@ -1,37 +1,32 @@
 package com.mgavino.bankingrest.bank.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mgavino.bankingrest.bank.service.AccountService;
 import com.mgavino.bankingrest.bank.service.MovementService;
 import com.mgavino.bankingrest.bank.service.dto.AccountDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementDto;
 import com.mgavino.bankingrest.bank.service.enums.MovementType;
+import com.mgavino.bankingrest.core.GenericControllerTests;
 import com.mgavino.bankingrest.core.exception.NotEnoughMoneyException;
 import com.mgavino.bankingrest.core.exception.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BankControllerFailTests {
+public class BankControllerFailTests extends GenericControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private static final String URI = "/bank";
 
     @MockBean
     private MovementService movementService;
@@ -43,31 +38,26 @@ public class BankControllerFailTests {
 
         // try create bank account
         AccountDto bank = new AccountDto();
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank" )
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bank)));
+        ResultActions result = post(URI, bank);
 
-        // check 400 (valid parameters)
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        // check 400 (invalid parameters)
+        checkStatus(result, HttpStatus.BAD_REQUEST);
 
     }
 
     @Test
     public void getAllNotFound() throws Exception {
 
-        // mock service
-        Mockito.when(accountService.find(Mockito.any()))
-                .thenThrow(new NotFoundException());
+        // mock not found
+        Mockito.when(accountService.find(Mockito.any())).thenThrow(new NotFoundException());
 
         // try get bank accounts
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank" )
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("userId", "1"));
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", "1");
+        ResultActions result = get(URI, params);
 
-        // check 401
-        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+        // check 404 (not found)
+        checkStatus(result, HttpStatus.NOT_FOUND);
 
     }
 
@@ -75,12 +65,10 @@ public class BankControllerFailTests {
     public void getAllBadRequest() throws Exception {
 
         // try get bank accounts
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank" )
-                        .contentType(MediaType.APPLICATION_JSON));
+        ResultActions result = get(URI);
 
-        // check 400 (valid parameters)
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        // check 400 (invalid parameters)
+        checkStatus(result, HttpStatus.BAD_REQUEST);
 
     }
 
@@ -88,16 +76,13 @@ public class BankControllerFailTests {
     public void getNotFound() throws Exception {
 
         // mock service
-        Mockito.when(accountService.get(Mockito.any()))
-                .thenThrow(new NotFoundException());
+        Mockito.when(accountService.get(Mockito.eq(1L))).thenThrow(new NotFoundException());
 
         // try get bank account
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank/1" )
-                        .contentType(MediaType.APPLICATION_JSON));
+        ResultActions result = get(URI + "/1");
 
-        // check 401 (valid parameters)
-        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+        // check 404 (not found)
+        checkStatus(result, HttpStatus.NOT_FOUND);
 
     }
 
@@ -105,16 +90,13 @@ public class BankControllerFailTests {
     public void movementsNotFound() throws Exception {
 
         // mock service
-        Mockito.when(movementService.find(Mockito.anyLong(), Mockito.any()))
-                .thenThrow(new NotFoundException());
+        Mockito.when(movementService.find(Mockito.eq(1L), Mockito.any())).thenThrow(new NotFoundException());
 
         // try get movements
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.get( "/bank/1/movements" )
-                        .contentType(MediaType.APPLICATION_JSON));
+        ResultActions result = get(URI + "/1/movements");
 
-        // check 401
-        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+        // check 404 (not found)
+        checkStatus(result, HttpStatus.NOT_FOUND);
 
     }
 
@@ -122,38 +104,33 @@ public class BankControllerFailTests {
     public void withdrawNotFound() throws Exception {
 
         // mock service
-        Mockito.when(movementService.insert(Mockito.anyLong(), MovementType.DEPOSIT, Mockito.any()))
+        Mockito.when(movementService.insert(Mockito.eq(1L), Mockito.eq(MovementType.WITHDRAW), Mockito.any()))
                 .thenThrow(new NotFoundException());
 
         // try create withdraw
         MovementDto movement = new MovementDto();
         movement.setAmount(20.0);
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank/1/withdraw" )
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movement)));
+        ResultActions result = post(URI + "/1/withdraw", movement);
 
-        // check 401
-        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+        // check 404 (not found)
+        checkStatus(result, HttpStatus.NOT_FOUND);
+
     }
 
     @Test
     public void withdrawNotEnoughMoney() throws Exception {
 
         // mock service
-        Mockito.when(movementService.insert(Mockito.anyLong(), MovementType.WITHDRAW, Mockito.any()))
+        Mockito.when(movementService.insert(Mockito.eq(1L), Mockito.eq(MovementType.WITHDRAW), Mockito.any()))
                 .thenThrow(new NotEnoughMoneyException());
 
         // try create withdraw
         MovementDto movement = new MovementDto();
         movement.setAmount(20.0);
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank/1/withdraw" )
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movement)));
+        ResultActions result = post(URI + "/1/withdraw", movement);
 
         // check 400 (enough money)
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        checkStatus(result, HttpStatus.BAD_REQUEST);
 
     }
 
@@ -162,13 +139,28 @@ public class BankControllerFailTests {
 
         // try create withdraw
         MovementDto movement = new MovementDto();
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank/1/withdraw" )
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movement)));
+        movement.setAmount(-20.0);
+        ResultActions result = post(URI + "/1/withdraw", movement);
 
-        // check 400 (valid parameters)
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        // check 400 (invalid parameters)
+        checkStatus(result, HttpStatus.BAD_REQUEST);
+
+    }
+
+    @Test
+    public void depositNotFound() throws Exception {
+
+        // mock service
+        Mockito.when(movementService.insert(Mockito.eq(1L), Mockito.eq(MovementType.DEPOSIT), Mockito.any()))
+                .thenThrow(new NotFoundException());
+
+        // try create withdraw
+        MovementDto movement = new MovementDto();
+        movement.setAmount(20.0);
+        ResultActions result = post(URI + "/1/deposit", movement);
+
+        // check 404 (not found)
+        checkStatus(result, HttpStatus.NOT_FOUND);
 
     }
 
@@ -177,13 +169,11 @@ public class BankControllerFailTests {
 
         // try create deposit
         MovementDto movement = new MovementDto();
-        ResultActions result = mockMvc.perform(
-                MockMvcRequestBuilders.post( "/bank/1/deposit" )
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movement)));
+        movement.setAmount(-20.0);
+        ResultActions result = post(URI + "/1/deposit", movement);
 
-        // check 400 (valid parameters)
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        // check 400 (invalid parameters)
+        checkStatus(result, HttpStatus.BAD_REQUEST);
 
     }
 

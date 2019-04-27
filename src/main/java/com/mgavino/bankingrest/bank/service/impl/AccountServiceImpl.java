@@ -1,7 +1,7 @@
 package com.mgavino.bankingrest.bank.service.impl;
 
-import com.mgavino.bankingrest.bank.repository.model.AccountEntity;
 import com.mgavino.bankingrest.bank.repository.AccountRepository;
+import com.mgavino.bankingrest.bank.repository.model.AccountEntity;
 import com.mgavino.bankingrest.bank.service.AccountService;
 import com.mgavino.bankingrest.bank.service.dto.AccountDto;
 import com.mgavino.bankingrest.bank.service.dto.AccountFilterDto;

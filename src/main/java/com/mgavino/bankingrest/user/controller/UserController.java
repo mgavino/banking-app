@@ -4,10 +4,8 @@ import com.mgavino.bankingrest.user.service.UserService;
 import com.mgavino.bankingrest.user.service.dto.UserDto;
 import com.mgavino.bankingrest.user.service.dto.UserResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -18,6 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method=RequestMethod.POST)
     public UserResultDto signup(@RequestBody @Valid UserDto userDto) throws Exception {
         return userService.insert(userDto);

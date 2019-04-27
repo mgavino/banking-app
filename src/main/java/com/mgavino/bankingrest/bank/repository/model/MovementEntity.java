@@ -1,6 +1,5 @@
 package com.mgavino.bankingrest.bank.repository.model;
 
-import com.mgavino.bankingrest.core.model.AuditableEntity;
 import com.mgavino.bankingrest.core.model.IdentifyEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

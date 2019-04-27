@@ -3,6 +3,7 @@ package com.mgavino.bankingrest.bank.service.dto;
 public class AccountResultDto {
 
     private Long id;
+    private String name;
     private Double balance;
 
     public Long getId() {
@@ -21,4 +22,11 @@ public class AccountResultDto {
         this.balance = balance;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

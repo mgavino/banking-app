@@ -1,12 +1,10 @@
 package com.mgavino.bankingrest.bank.service;
 
-import com.mgavino.bankingrest.bank.repository.model.MovementEntity;
 import com.mgavino.bankingrest.bank.service.dto.MovementDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementFilterDto;
 import com.mgavino.bankingrest.bank.service.dto.MovementResultDto;
 import com.mgavino.bankingrest.bank.service.enums.MovementType;
 
-import java.util.Date;
 import java.util.List;
 
 public interface MovementService {

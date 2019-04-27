@@ -1,14 +1,10 @@
 package com.mgavino.bankingrest.bank.repository.model;
 
 import com.mgavino.bankingrest.core.model.AuditableEntity;
-import com.mgavino.bankingrest.core.model.IdentifyEntity;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = "bac_bank_account")
