@@ -37,7 +37,7 @@ public class MovementServiceFailTest {
 		// check
 		MovementDto movement = new MovementDto();
 		movement.setAmount(4.00);
-		movementService.insert(account.getUser(), MovementType.WITHDRAW, movement);
+		movementService.insert(account.getId(), MovementType.WITHDRAW, movement);
 
 	}
 
