@@ -75,19 +75,37 @@ public class MovementServiceTest {
 		// insert data
 		UserEntity user = userRepository.save(UtilTests.createUserEntity("test17@mgavino.com", "password"));
 		AccountEntity account = accountRepository.save(UtilTests.createAccountEntity(user.getId(), "Account 17", 10.0));
-		MovementEntity movement20190327 = repository.save(UtilTests.createMovementEntity(account.getId(), "Concept", 10.00, 1553683701));
-		MovementEntity movement20190227 = repository.save(UtilTests.createMovementEntity(account.getId(), "Concept", 10.00, 1551264501));
+
+		Date date1 = new Date();
+		Thread.sleep(1000);
+		MovementEntity movement1 = repository.save(UtilTests.createMovementEntity(account.getId(), "Concept", 10.00));
+		MovementEntity movement2 = repository.save(UtilTests.createMovementEntity(account.getId(), "Concept", 10.00));
+		Thread.sleep(1000);
+		Date date2 = new Date();
+		Thread.sleep(1000);
+		MovementEntity movement3 = repository.save(UtilTests.createMovementEntity(account.getId(), "Concept", 10.00));
+		Thread.sleep(1000);
+		Date date3 = new Date();
 
 		// call
 		MovementFilterDto filter = new MovementFilterDto();
-		filter.setFrom(new Date(1551091701)); //25-02-2019
-		filter.setTo(new Date(1551350901)); // 28-02-2019
+		filter.setFrom(date2);
+		filter.setTo(date3);
 		List<MovementResultDto> movements = service.find(account.getId(), filter);
 
 		// check
 		Assert.assertNotNull(movements);
 		Assert.assertEquals(1, movements.size());
-		Assert.assertEquals(movement20190227.getId(), movements.get(0).getId());
+		Assert.assertEquals(movement3.getId(), movements.get(0).getId());
+
+		// call
+		filter.setFrom(date1);
+		filter.setTo(date2);
+		movements = service.find(account.getId(), filter);
+
+		// check
+		Assert.assertNotNull(movements);
+		Assert.assertEquals(2, movements.size());
 
 	}
 

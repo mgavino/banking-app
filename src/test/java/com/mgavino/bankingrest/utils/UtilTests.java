@@ -51,17 +51,10 @@ public class UtilTests {
     }
 
     public static MovementEntity createMovementEntity(Long bankId, String concept, Double amount) {
-        return createMovementEntity(bankId, concept, amount, 0);
-    }
-
-    public static MovementEntity createMovementEntity(Long bankId, String concept, Double amount, long timespamp) {
         MovementEntity entity = new MovementEntity();
         entity.setAccount(bankId);
         entity.setConcept(concept);
         entity.setAmount(amount);
-        if (timespamp > 0) {
-            entity.setDate(new Date(timespamp));
-        }
         return entity;
     }
 }

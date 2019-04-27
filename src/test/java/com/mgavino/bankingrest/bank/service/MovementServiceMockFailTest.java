@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class MovementServiceMockFailTest {
 
 		// mock
 		Mockito.when(movementRepository.findByAccountAndDateBetween(Mockito.eq(1L),
-				Mockito.any(Date.class), Mockito.any(Date.class))).thenThrow(new NotFoundException());
+				Mockito.any(Date.class), Mockito.any(Date.class))).thenReturn(new ArrayList<>());
 
 		// check
 		MovementFilterDto filter = new MovementFilterDto();
