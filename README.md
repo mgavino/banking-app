@@ -1,7 +1,7 @@
 # Banking REST app
 
 ## DDBB
-We need to run a PosgreSQL on localhost:5432 with a created database called _banking_. User and password have to be postgres/postgres
+It is needed to run a PosgreSQL on localhost:5432 with a database called _banking_. User and password have to be postgres/postgres
 
 ## REST services
 
