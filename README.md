@@ -33,6 +33,7 @@ GET /bank
 {
   "user: userId
 }
+```
 
 #### Get bank account by id
 ```
@@ -57,7 +58,7 @@ POST /bank/{bankAccountId}/deposit
 }
 ```
 
-####
+#### Withdraw money from bank account
 ```
 POST /bank/{bankAccountId}/withdraw
 {
