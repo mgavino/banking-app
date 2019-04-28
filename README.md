@@ -16,6 +16,11 @@ POST /user
 }
 ```
 
+#### Get user
+```
+GET /user/{id}
+```
+
 ### BANK
 
 #### Create bank account
@@ -31,7 +36,7 @@ POST /bank
 ```
 GET /bank
 {
-  "user: userId
+  "user": userId
 }
 ```
 
