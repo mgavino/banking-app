@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,9 +38,9 @@ public class UserControllerTests extends GenericControllerTests {
 	}
 
 	@Test
-	public void singup() throws Exception {
+	public void post() throws Exception {
 
-		// bank save mock
+		// user save mock
 		Mockito.when(userService.insert(Mockito.any(UserDto.class)))
 				.thenReturn( UtilTests.createUserResultDto(1L) );
 
@@ -50,6 +52,28 @@ public class UserControllerTests extends GenericControllerTests {
 
 		// check 301
 		UserResultDto userResponse = checkStatusReturnObj(result, HttpStatus.CREATED, UserResultDto.class);
+
+		// check location header
+		result.andExpect(MockMvcResultMatchers.header().exists(HttpHeaders.LOCATION));
+
+		// check response
+		Assert.assertNotNull(userResponse);
+		Assert.assertEquals(Long.valueOf(1L), userResponse.getId());
+
+	}
+
+	@Test
+	public void get() throws Exception {
+
+		// user get mock
+		Mockito.when(userService.get(Mockito.eq(1L)))
+				.thenReturn(UtilTests.createUserResultDto(1L));
+
+		// try get
+		ResultActions result = get(URI + "/1");
+
+		// check 200
+		UserResultDto userResponse = checkStatusReturnObj(result, HttpStatus.OK, UserResultDto.class);
 
 		// check response
 		Assert.assertNotNull(userResponse);
