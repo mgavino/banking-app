@@ -23,10 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -125,7 +123,13 @@ public class BankControllerTests extends GenericControllerTests {
 		Mockito.when( movementService.find(Mockito.eq(1L),  Mockito.any())).thenReturn(mockResults);
 
 		// try get movements
-		ResultActions result = get(URI + "/1/movements");
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Map<String, String> params = new HashMap<>();
+		params.put("from", sdf.format(cal.getTime()));
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		params.put("to", sdf.format(cal.getTime()));
+		ResultActions result = get(URI + "/1/movements", params);
 
 		// check 200
 		List<MovementResultDto> movementResults = checkStatusReturnList(result, HttpStatus.OK, MovementResultDto.class);

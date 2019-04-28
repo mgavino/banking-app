@@ -2,12 +2,16 @@ package com.mgavino.bankingrest.bank.service.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class MovementFilterDto {
 
+    @NotNull
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date from;
+
+    @NotNull
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date to;
 

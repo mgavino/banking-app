@@ -29,7 +29,7 @@ public class MovementServiceImpl implements MovementService {
     @Autowired
     private ModelMapper mapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public MovementResultDto insert(Long bankId, MovementType type, MovementDto movementDto) throws Exception {
 
         // insert new movement
@@ -51,7 +51,7 @@ public class MovementServiceImpl implements MovementService {
     public List<MovementResultDto> find(Long bankId, MovementFilterDto movementFilterDto) throws Exception {
 
         // find list by bankId, dateFrom and dateTo
-        List<MovementEntity> movements = repository.findByAccountAndDateBetween(bankId,
+        List<MovementEntity> movements = repository.findByAccountAndDateBetweenOrderByDateDesc(bankId,
                                             movementFilterDto.getFrom(), movementFilterDto.getTo());
         if (!movements.isEmpty()) {
 

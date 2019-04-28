@@ -1,5 +1,7 @@
 package com.mgavino.bankingrest.bank.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class MovementResultDto {
@@ -7,6 +9,8 @@ public class MovementResultDto {
     private Long id;
     private String concept;
     private Double amount;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date date;
 
     public Long getId() {

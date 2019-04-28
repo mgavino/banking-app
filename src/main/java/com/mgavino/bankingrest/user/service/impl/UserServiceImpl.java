@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper mapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public UserResultDto insert(UserDto userDto) throws Exception {
 
         // check already exists

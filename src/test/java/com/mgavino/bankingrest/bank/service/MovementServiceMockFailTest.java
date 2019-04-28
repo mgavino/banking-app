@@ -48,7 +48,7 @@ public class MovementServiceMockFailTest {
 	public void findNotFound() throws Exception {
 
 		// mock
-		Mockito.when(movementRepository.findByAccountAndDateBetween(Mockito.eq(1L),
+		Mockito.when(movementRepository.findByAccountAndDateBetweenOrderByDateDesc(Mockito.eq(1L),
 				Mockito.any(Date.class), Mockito.any(Date.class))).thenReturn(new ArrayList<>());
 
 		// check

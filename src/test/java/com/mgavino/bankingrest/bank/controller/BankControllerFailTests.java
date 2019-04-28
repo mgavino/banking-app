@@ -93,7 +93,10 @@ public class BankControllerFailTests extends GenericControllerTests {
         Mockito.when(movementService.find(Mockito.eq(1L), Mockito.any())).thenThrow(new NotFoundException());
 
         // try get movements
-        ResultActions result = get(URI + "/1/movements");
+        Map<String, String> params = new HashMap<>();
+        params.put("from", "2019-04-26");
+        params.put("to", "2019-04-28");
+        ResultActions result = get(URI + "/1/movements", params);
 
         // check 404 (not found)
         checkStatus(result, HttpStatus.NOT_FOUND);

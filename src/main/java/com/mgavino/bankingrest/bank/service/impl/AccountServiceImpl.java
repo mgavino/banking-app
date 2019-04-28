@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private ModelMapper mapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AccountResultDto insert(AccountDto accountDto) throws Exception {
 
         // check user exists
@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AccountResultDto refreshBalance(Long id, Double amount) throws Exception {
 
         // check bank account exists
