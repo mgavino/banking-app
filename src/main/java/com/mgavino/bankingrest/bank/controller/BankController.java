@@ -5,10 +5,12 @@ import com.mgavino.bankingrest.bank.service.MovementService;
 import com.mgavino.bankingrest.bank.service.dto.*;
 import com.mgavino.bankingrest.bank.service.enums.MovementType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,11 +23,15 @@ public class BankController {
     @Autowired
     private MovementService movementService;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method=RequestMethod.POST)
-    public AccountResultDto post(@RequestBody @Valid AccountDto bankAccount) throws Exception {
+    public ResponseEntity<AccountResultDto> post(@RequestBody @Valid AccountDto bankAccount, UriComponentsBuilder ucBuilder) throws Exception {
         // insert bank account
-        return accountService.insert(bankAccount);
+        AccountResultDto result = accountService.insert(bankAccount);
+
+        // build response
+        URI location = ucBuilder.path("/bank/{id}").buildAndExpand(result.getId()).toUri();
+        return ResponseEntity.created(location).body(result);
+
     }
 
     @RequestMapping(method=RequestMethod.GET)
