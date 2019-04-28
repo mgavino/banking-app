@@ -1,11 +1,11 @@
 # Banking REST app
 
-##DDBB
+## DDBB
 We need to run a PosgreSQL on localhost:5432 with a created database called _banking_. User and password have to be postgres/postgres
 
-##REST services
+## REST services
 
-###USER
+### USER
 
 #### Signup
 ```
@@ -16,7 +16,7 @@ POST /user
 }
 ```
 
-###BANK
+### BANK
 
 #### Create bank account
 ```
